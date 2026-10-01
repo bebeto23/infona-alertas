@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Seguimiento de alertas de deforestación – INFONA</title>
+<style>
+:root{--bg:#f3f1ef;--card:#fff;--ink:#1d2a33;--muted:#5d6c76;--line:#e1ddd8;--acc:#2f6f4f;--ok:#2f6f4f;--pen:#d9822b;--sen:#b3261e;--chip:#e7ece9;--hov:#f0f4f1;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161b1f;--card:#1f262b;--ink:#e6ebee;--muted:#9aa8b1;--line:#34404a;--acc:#7fc29c;--ok:#5fae84;--pen:#f0a050;--sen:#ef6b62;--chip:#2a343b;--hov:#27313a}}
+:root[data-theme="dark"]{--bg:#161b1f;--card:#1f262b;--ink:#e6ebee;--muted:#9aa8b1;--line:#34404a;--acc:#7fc29c;--ok:#5fae84;--pen:#f0a050;--sen:#ef6b62;--chip:#2a343b;--hov:#27313a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.4 "Segoe UI",Avenir,"Helvetica Neue",Arial,sans-serif}
+main{padding:12px;max-width:1400px;margin:0 auto}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin-bottom:10px}
+h1{font-size:1.05rem;margin:0;flex:1 1 260px}
+.f{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.f span{color:var(--muted);font-size:.75rem;margin-right:2px}
+button.c{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:3px 10px;font:inherit;font-size:.78rem;cursor:pointer}
+button.c[aria-pressed=true]{background:var(--acc);border-color:var(--acc);color:#fff}
+#dsel{display:none;background:var(--sen);border-color:var(--sen);color:#fff}
+.kp{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:10px}
+.k{background:var(--card);padding:8px 10px;border-top:3px solid var(--acc)}
+.k b{display:block;font-size:1.35rem;font-variant-numeric:tabular-nums}.k small{color:var(--muted)}
+.k.p{border-color:var(--pen)}.k.s{border-color:var(--sen)}
+.g{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:10px}
+.cd{background:var(--card);padding:10px 12px;min-width:0}
+h2{font-size:.85rem;margin:0 0 2px}.h{color:var(--muted);font-size:.72rem;margin:0 0 8px}
+.lg{display:flex;gap:10px;font-size:.72rem;color:var(--muted);margin-bottom:6px}.lg i{display:inline-block;width:9px;height:9px;margin-right:4px;vertical-align:-1px}
+.vb{display:flex;align-items:flex-end;gap:12px;height:190px;padding-top:14px}
+.vc{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;cursor:pointer;border-radius:3px}
+.vc:hover{background:var(--hov)}.vc.on{outline:2px solid var(--acc)}
+.vs{flex:1;width:60%;display:flex;flex-direction:column;justify-content:flex-end}
+.vs div{width:100%}.vt{font-weight:700;font-size:.78rem}.vl{font-size:.75rem;color:var(--muted);margin-top:3px}
+.hr{display:grid;grid-template-columns:118px 1fr 42px 40px;align-items:center;gap:6px;padding:2px 3px;cursor:pointer;border-radius:3px}
+.hr:hover{background:var(--hov)}.hr.on{outline:2px solid var(--acc)}
+.hr .n{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}.hr .p{text-align:right;color:var(--muted);font-size:.72rem}
+.hr .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar{display:flex;height:12px;background:var(--chip);border-radius:2px;overflow:hidden}
+.th .hr{grid-template-columns:150px 1fr 42px 40px;cursor:default}
+.nt{color:var(--muted);font-size:.72rem;margin:8px 2px 0}
+#ins{background:var(--card);border-left:4px solid var(--sen);padding:7px 10px;margin-bottom:10px;font-size:.82rem}
+@media (max-width:980px){.g{grid-template-columns:1fr}.kp{grid-template-columns:repeat(2,1fr)}}
+</style></head><body><main>
+<div class="top"><h1>Seguimiento de alertas de deforestación</h1>
+<div class="f" id="fy"><span>Año</span></div>
+<div class="f" id="fr"><span>Región</span></div>
+<button class="c" id="dsel" title="Quitar filtro de departamento"></button></div>
+<div class="kp">
+<div class="k"><b id="k1"></b><small>alertas</small></div>
+<div class="k"><b id="k2"></b><small>atendidas</small></div>
+<div class="k p"><b id="k3"></b><small>pendientes</small></div>
+<div class="k"><b id="k4"></b><small>intervenciones y fiscalizaciones</small></div>
+<div class="k"><b id="k5"></b><small>con solicitud de allanamiento</small></div></div>
+<div class="g">
+<div class="cd"><h2>Alertas por año</h2><p class="h">Clic en una barra para filtrar</p>
+<div class="lg"><span><i style="background:var(--ok)"></i>Atendidas</span><span><i style="background:var(--pen)"></i>Pendientes</span></div><div class="vb" id="cy"></div></div>
+<div class="cd"><h2>Alertas por departamento</h2><p class="h">Clic en un departamento para filtrar · % atendidas a la derecha</p><div id="cdp"></div></div>
+<div class="cd th"><h2>Tipo de intervención</h2><p class="h">Según el registro de la DGOR</p><div id="ct"></div>
+<h2 style="margin-top:14px">Porcentaje de atención por año</h2><p class="h">Alertas atendidas sobre el total</p><div id="cs"></div></div>
+</div>
+<p class="nt">Fuente: INFONA – DGOR, Sistema de Alertas Tempranas. Datos agregados, sin información personal. 2026: datos parciales. Una alerta con estado "pendiente" puede seguir en trámite o haber sido gestionada por otra institución sin registro en esta base.</p>
+</main>
+<script>
+const R=[[2023,"Alto Paraguay",0,"Sin registro",13],[2023,"Alto Paraguay",1,"Intervención",27],[2023,"Alto Paraguay",1,"Otros",3],[2023,"Alto Paraguay",1,"Reportes devueltos",3],[2023,"Alto Paraguay",1,"Solicitud de allanamiento",14],[2023,"Alto Paraná",0,"Sin registro",1],[2023,"Alto Paraná",1,"Intervención",8],[2023,"Alto Paraná",1,"Solicitud de allanamiento",1],[2023,"Amambay",0,"Sin registro",18],[2023,"Amambay",1,"Fiscalización",8],[2023,"Amambay",1,"Intervención",13],[2023,"Amambay",1,"Otros",1],[2023,"Amambay",1,"Solicitud de allanamiento",22],[2023,"Boquerón",0,"Sin registro",6],[2023,"Boquerón",1,"Fiscalización",2],[2023,"Boquerón",1,"Intervención",7],[2023,"Boquerón",1,"Solicitud de allanamiento",34],[2023,"Caaguazú",0,"Sin registro",11],[2023,"Caaguazú",1,"Fiscalización",5],[2023,"Caaguazú",1,"Intervención",32],[2023,"Caaguazú",1,"Otros",2],[2023,"Caaguazú",1,"Solicitud de allanamiento",26],[2023,"Caazapá",0,"Sin registro",9],[2023,"Caazapá",1,"Fiscalización",1],[2023,"Caazapá",1,"Intervención",11],[2023,"Caazapá",1,"Otros",2],[2023,"Caazapá",1,"Solicitud de allanamiento",23],[2023,"Canindeyú",0,"Sin registro",58],[2023,"Canindeyú",1,"Fiscalización",8],[2023,"Canindeyú",1,"Intervención",8],[2023,"Canindeyú",1,"Otros",6],[2023,"Canindeyú",1,"Solicitud de allanamiento",34],[2023,"Central",1,"Intervención",2],[2023,"Central",1,"Solicitud de allanamiento",1],[2023,"Concepción",0,"Sin registro",61],[2023,"Concepción",1,"Fiscalización",1],[2023,"Concepción",1,"Intervención",4],[2023,"Concepción",1,"Otros",9],[2023,"Concepción",1,"Reportes devueltos",1],[2023,"Concepción",1,"Solicitud de allanamiento",8],[2023,"Cordillera",0,"Sin registro",2],[2023,"Cordillera",1,"Intervención",2],[2023,"Cordillera",1,"Otros",1],[2023,"Cordillera",1,"Solicitud de allanamiento",1],[2023,"Guairá",0,"Sin registro",8],[2023,"Guairá",1,"Intervención",1],[2023,"Guairá",1,"Solicitud de allanamiento",1],[2023,"Itapúa",0,"Sin registro",6],[2023,"Itapúa",1,"Fiscalización",6],[2023,"Itapúa",1,"Intervención",13],[2023,"Paraguarí",0,"Sin registro",3],[2023,"Paraguarí",1,"Intervención",2],[2023,"Paraguarí",1,"Solicitud de allanamiento",1],[2023,"Presidente Hayes",0,"Sin registro",14],[2023,"Presidente Hayes",1,"Fiscalización",9],[2023,"Presidente Hayes",1,"Intervención",60],[2023,"Presidente Hayes",1,"Otros",3],[2023,"Presidente Hayes",1,"Reportes devueltos",2],[2023,"Presidente Hayes",1,"Solicitud de allanamiento",81],[2023,"San Pedro",0,"Sin registro",54],[2023,"San Pedro",1,"Fiscalización",4],[2023,"San Pedro",1,"Intervención",47],[2023,"San Pedro",1,"Otros",4],[2023,"San Pedro",1,"Solicitud de allanamiento",26],[2023,"Varios",1,"Fiscalización",1],[2023,"Ñeembucú",0,"Sin registro",1],[2024,"Alto Paraguay",0,"Sin registro",57],[2024,"Alto Paraguay",1,"Intervención",32],[2024,"Alto Paraguay",1,"Otros",5],[2024,"Alto Paraguay",1,"Reportes devueltos",9],[2024,"Alto Paraguay",1,"Solicitud de allanamiento",21],[2024,"Alto Paraná",0,"Sin registro",6],[2024,"Alto Paraná",1,"Fiscalización",3],[2024,"Alto Paraná",1,"Intervención",7],[2024,"Alto Paraná",1,"Reportes devueltos",2],[2024,"Alto Paraná",1,"Solicitud de allanamiento",2],[2024,"Amambay",0,"Sin registro",37],[2024,"Amambay",1,"Fiscalización",26],[2024,"Amambay",1,"Intervención",10],[2024,"Amambay",1,"Otros",4],[2024,"Amambay",1,"Reportes devueltos",3],[2024,"Amambay",1,"Sin registro",1],[2024,"Amambay",1,"Solicitud de allanamiento",10],[2024,"Boquerón",0,"Sin registro",21],[2024,"Boquerón",1,"Intervención",37],[2024,"Boquerón",1,"Reportes devueltos",4],[2024,"Boquerón",1,"Solicitud de allanamiento",2],[2024,"Caaguazú",0,"Sin registro",34],[2024,"Caaguazú",1,"Fiscalización",24],[2024,"Caaguazú",1,"Intervención",20],[2024,"Caaguazú",1,"Otros",1],[2024,"Caaguazú",1,"Reportes devueltos",1],[2024,"Caaguazú",1,"Solicitud de allanamiento",18],[2024,"Caazapá",0,"Sin registro",19],[2024,"Caazapá",1,"Fiscalización",2],[2024,"Caazapá",1,"Intervención",12],[2024,"Caazapá",1,"Otros",1],[2024,"Caazapá",1,"Reportes devueltos",3],[2024,"Caazapá",1,"Solicitud de allanamiento",35],[2024,"Canindeyú",0,"Sin registro",161],[2024,"Canindeyú",1,"Fiscalización",14],[2024,"Canindeyú",1,"Intervención",6],[2024,"Canindeyú",1,"Otros",1],[2024,"Canindeyú",1,"Reportes devueltos",5],[2024,"Canindeyú",1,"Solicitud de allanamiento",33],[2024,"Central",1,"Intervención",1],[2024,"Concepción",0,"Sin registro",75],[2024,"Concepción",1,"Fiscalización",1],[2024,"Concepción",1,"Intervención",15],[2024,"Concepción",1,"Otros",2],[2024,"Concepción",1,"Reportes devueltos",2],[2024,"Concepción",1,"Sin registro",2],[2024,"Concepción",1,"Solicitud de allanamiento",4],[2024,"Cordillera",0,"Sin registro",2],[2024,"Cordillera",1,"Fiscalización",1],[2024,"Cordillera",1,"Intervención",1],[2024,"Guairá",0,"Sin registro",11],[2024,"Guairá",1,"Intervención",6],[2024,"Guairá",1,"Reportes devueltos",3],[2024,"Itapúa",0,"Sin registro",7],[2024,"Itapúa",1,"Fiscalización",1],[2024,"Itapúa",1,"Intervención",13],[2024,"Itapúa",1,"Otros",3],[2024,"Itapúa",1,"Reportes devueltos",1],[2024,"Itapúa",1,"Solicitud de allanamiento",5],[2024,"Misiones",1,"Intervención",2],[2024,"Paraguarí",1,"Intervención",4],[2024,"Paraguarí",1,"Reportes devueltos",2],[2024,"Presidente Hayes",0,"Sin registro",48],[2024,"Presidente Hayes",1,"Fiscalización",14],[2024,"Presidente Hayes",1,"Intervención",47],[2024,"Presidente Hayes",1,"Otros",6],[2024,"Presidente Hayes",1,"Reportes devueltos",5],[2024,"Presidente Hayes",1,"Solicitud de allanamiento",62],[2024,"San Pedro",0,"Sin registro",57],[2024,"San Pedro",1,"Fiscalización",31],[2024,"San Pedro",1,"Intervención",71],[2024,"San Pedro",1,"Otros",12],[2024,"San Pedro",1,"Reportes devueltos",3],[2024,"San Pedro",1,"Sin registro",7],[2024,"San Pedro",1,"Solicitud de allanamiento",43],[2024,"Varios",0,"Sin registro",15],[2024,"Varios",1,"Solicitud de allanamiento",2],[2024,"Ñeembucú",0,"Sin registro",2],[2024,"Ñeembucú",1,"Fiscalización",1],[2025,"Alto Paraguay",0,"Sin registro",16],[2025,"Alto Paraguay",1,"Intervención",9],[2025,"Alto Paraguay",1,"Sin registro",1],[2025,"Alto Paraguay",1,"Solicitud de allanamiento",16],[2025,"Alto Paraná",0,"Sin registro",3],[2025,"Alto Paraná",1,"Fiscalización",1],[2025,"Alto Paraná",1,"Intervención",5],[2025,"Alto Paraná",1,"Solicitud de allanamiento",1],[2025,"Amambay",0,"Sin registro",43],[2025,"Amambay",1,"Fiscalización",7],[2025,"Amambay",1,"Otros",3],[2025,"Amambay",1,"Solicitud de allanamiento",11],[2025,"Boquerón",0,"Sin registro",10],[2025,"Boquerón",1,"Intervención",18],[2025,"Boquerón",1,"Otros",1],[2025,"Caaguazú",0,"Sin registro",27],[2025,"Caaguazú",1,"Fiscalización",17],[2025,"Caaguazú",1,"Intervención",4],[2025,"Caaguazú",1,"Otros",1],[2025,"Caaguazú",1,"Reportes devueltos",1],[2025,"Caaguazú",1,"Solicitud de allanamiento",3],[2025,"Caazapá",0,"Sin registro",15],[2025,"Caazapá",1,"Intervención",6],[2025,"Caazapá",1,"Solicitud de allanamiento",14],[2025,"Canindeyú",0,"Sin registro",29],[2025,"Canindeyú",1,"Fiscalización",4],[2025,"Canindeyú",1,"Otros",1],[2025,"Canindeyú",1,"Reportes devueltos",1],[2025,"Canindeyú",1,"Sin registro",4],[2025,"Canindeyú",1,"Solicitud de allanamiento",22],[2025,"Concepción",0,"Sin registro",59],[2025,"Concepción",1,"Fiscalización",13],[2025,"Concepción",1,"Intervención",9],[2025,"Concepción",1,"Solicitud de allanamiento",13],[2025,"Cordillera",1,"Fiscalización",1],[2025,"Guairá",0,"Sin registro",10],[2025,"Guairá",1,"Intervención",4],[2025,"Itapúa",0,"Sin registro",5],[2025,"Itapúa",1,"Fiscalización",3],[2025,"Itapúa",1,"Intervención",3],[2025,"Itapúa",1,"Solicitud de allanamiento",1],[2025,"Misiones",1,"Fiscalización",1],[2025,"Paraguarí",1,"Intervención",1],[2025,"Presidente Hayes",0,"Sin registro",29],[2025,"Presidente Hayes",1,"Fiscalización",3],[2025,"Presidente Hayes",1,"Intervención",28],[2025,"Presidente Hayes",1,"Reportes devueltos",10],[2025,"Presidente Hayes",1,"Sin registro",4],[2025,"Presidente Hayes",1,"Solicitud de allanamiento",19],[2025,"San Pedro",0,"Sin registro",31],[2025,"San Pedro",1,"Fiscalización",8],[2025,"San Pedro",1,"Intervención",17],[2025,"San Pedro",1,"Otros",5],[2025,"San Pedro",1,"Reportes devueltos",2],[2025,"San Pedro",1,"Sin registro",3],[2025,"San Pedro",1,"Solicitud de allanamiento",14],[2025,"Varios",0,"Sin registro",1],[2025,"Varios",1,"Solicitud de allanamiento",1],[2025,"Ñeembucú",0,"Sin registro",3],[2025,"Ñeembucú",1,"Fiscalización",2],[2026,"Alto Paraguay",0,"Sin registro",11],[2026,"Alto Paraguay",1,"Intervención",11],[2026,"Alto Paraguay",1,"Solicitud de allanamiento",3],[2026,"Alto Paraná",0,"Sin registro",1],[2026,"Alto Paraná",1,"Intervención",1],[2026,"Amambay",0,"Sin registro",6],[2026,"Amambay",1,"Fiscalización",1],[2026,"Boquerón",0,"Sin registro",9],[2026,"Boquerón",1,"Intervención",8],[2026,"Caaguazú",0,"Sin registro",3],[2026,"Caaguazú",1,"Fiscalización",3],[2026,"Caazapá",0,"Sin registro",9],[2026,"Caazapá",1,"Intervención",7],[2026,"Canindeyú",0,"Sin registro",8],[2026,"Canindeyú",1,"Fiscalización",1],[2026,"Canindeyú",1,"Intervención",2],[2026,"Canindeyú",1,"Reportes devueltos",2],[2026,"Canindeyú",1,"Sin registro",1],[2026,"Canindeyú",1,"Solicitud de allanamiento",2],[2026,"Concepción",0,"Sin registro",11],[2026,"Concepción",1,"Solicitud de allanamiento",1],[2026,"Guairá",0,"Sin registro",2],[2026,"Itapúa",1,"Intervención",2],[2026,"Presidente Hayes",0,"Sin registro",12],[2026,"Presidente Hayes",1,"Intervención",4],[2026,"Presidente Hayes",1,"Reportes devueltos",1],[2026,"Presidente Hayes",1,"Solicitud de allanamiento",3],[2026,"San Pedro",0,"Sin registro",9],[2026,"San Pedro",1,"Intervención",5],[2026,"San Pedro",1,"Solicitud de allanamiento",3]];// [año, dpto, atendida, tipo, n]
+const OCC=["Alto Paraguay","Presidente Hayes","Boquerón"];
+const reg=d=>OCC.includes(d)?"Occidental":(d==="Varios"?"Varios":"Oriental");
+const S={y:null,r:null,d:null};
+const fmt=n=>n.toLocaleString("es-PY");
+const pc=(a,b)=>b?Math.round(a/b*100)+" %":"–";
+function chips(id,key,opts){const el=document.getElementById(id);
+ opts.forEach(([v,l])=>{const b=document.createElement("button");b.className="c";b.textContent=l;b.onclick=()=>{S[key]=v;draw()};b.dataset.v=v;b.dataset.k=key;el.appendChild(b)})}
+chips("fy","y",[[null,"Todos"],[2023,"2023"],[2024,"2024"],[2025,"2025"],[2026,"2026*"]]);
+chips("fr","r",[[null,"Todas"],["Oriental","Oriental"],["Occidental","Occidental"]]);
+document.getElementById("dsel").onclick=()=>{S.d=null;draw()};
+function filt(skip){return R.filter(r=>(skip==="y"||S.y===null||r[0]===S.y)&&(S.r===null||reg(r[1])===S.r)&&(skip==="d"||S.d===null||r[1]===S.d))}
+function sum(rs,f){return rs.reduce((t,r)=>t+(f(r)?r[4]:0),0)}
+function grp(rs,k){const m=new Map();rs.forEach(r=>{const g=m.get(r[k])||{n:0,a:0};g.n+=r[4];g.a+=r[2]?r[4]:0;m.set(r[k],g)});return m}
+function draw(){
+ document.querySelectorAll("button.c[data-k]").forEach(b=>{const v=b.dataset.v;const cur=S[b.dataset.k];b.setAttribute("aria-pressed",String((v===""&&cur===null)||(v!==""&&String(cur)===v)))});
+ const ds=document.getElementById("dsel");ds.style.display=S.d?"inline-block":"none";ds.textContent=S.d?S.d+" ✕":"";
+ const F=filt();const N=sum(F,()=>1),A=sum(F,r=>r[2]),Iv=sum(F,r=>r[3]==="Intervención"||r[3]==="Fiscalización"),Al=sum(F,r=>r[3]==="Solicitud de allanamiento");
+ k1.textContent=fmt(N);k2.textContent=pc(A,N);k3.textContent=fmt(N-A);k4.textContent=fmt(Iv);k5.textContent=fmt(Al);
+ 
+ // years
+ const Y=grp(filt("y"),0);const ys=[2023,2024,2025,2026];const my=Math.max(1,...ys.map(y=>(Y.get(y)||{n:0}).n));
+ cy.innerHTML=ys.map(y=>{const g=Y.get(y)||{n:0,a:0};const h=g.n/my*100;return `<div class="vc${S.y===y?" on":""}" data-y="${y}" title="${y}: ${fmt(g.n)} alertas, ${pc(g.a,g.n)} atendidas"><div class="vt">${fmt(g.n)}</div><div class="vs"><div style="height:${h*(g.n-g.a)/(g.n||1)}%;background:var(--pen)"></div><div style="height:${h*g.a/(g.n||1)}%;background:var(--ok)"></div></div><div class="vl">${y}${y===2026?"*":""}</div></div>`}).join("");
+ cy.querySelectorAll(".vc").forEach(e=>e.onclick=()=>{const y=+e.dataset.y;S.y=S.y===y?null:y;draw()});
+ // departments
+ const D=[...grp(filt("d"),1)].sort((a,b)=>b[1].n-a[1].n);const md=Math.max(1,...D.map(x=>x[1].n));
+ cdp.innerHTML=D.map(([d,g])=>`<div class="hr${S.d===d?" on":""}" data-d="${d}" title="${d}: ${fmt(g.n)} alertas, ${pc(g.a,g.n)} atendidas"><span class="nm">${d==="Varios"?"Varios dptos.":d}</span><div class="bar" style="width:${g.n/md*100}%"><div style="width:${g.a/g.n*100}%;background:var(--ok)"></div><div style="flex:1;background:var(--pen)"></div></div><span class="n">${fmt(g.n)}</span><span class="p">${pc(g.a,g.n)}</span></div>`).join("");
+ cdp.querySelectorAll(".hr").forEach(e=>e.onclick=()=>{const d=e.dataset.d;S.d=S.d===d?null:d;draw()});
+ // tipo
+ const T=[...grp(F,3)].sort((a,b)=>b[1].n-a[1].n);const mt=Math.max(1,...T.map(x=>x[1].n));
+ ct.innerHTML=T.map(([t,g])=>`<div class="hr"><span class="nm">${t}</span><div class="bar" style="width:${g.n/mt*100}%"><div style="flex:1;background:var(--acc)"></div></div><span class="n">${fmt(g.n)}</span><span class="p">${pc(g.n,N)}</span></div>`).join("")||"<p class='h'>Sin datos</p>";
+ // senad by year
+ const SY=grp(F,0);
+ cs.innerHTML=ys.map(y=>{const g=SY.get(y)||{n:0,a:0};return `<div class="hr"><span class="nm">${y}${y===2026?"*":""}</span><div class="bar" style="width:100%"><div style="width:${g.n?g.a/g.n*100:0}%;background:var(--ok)"></div></div><span class="n">${pc(g.a,g.n)}</span><span class="p">${fmt(g.n)}</span></div>`}).join("");
+}
+draw();
+</script></body></html>
